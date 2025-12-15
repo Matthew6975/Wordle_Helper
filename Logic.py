@@ -1,7 +1,6 @@
 #This is a wordle bot that helps you solve wordles by suggesting possible words based on your inputs.
 #The goal is to have it provide the most probable words based on the current information recieved from previous guesses.
 
-import math
 from Five_Letter_Words import FiveLetterWords as words
 
 unknown = "_"  #Represents an unknown letter in the pattern.
@@ -64,10 +63,6 @@ for i in range(len(guess)):
 known_letters = pos1[0] + pos2[0] + pos3[0] + pos4[0] + pos5[0]
 
 
-
-
-
-
 possible_words = []
 greens_passed = []
 yellows_passed = []
@@ -97,8 +92,6 @@ for w in greens_passed:
         for p in range(len(pattern)):
                 if w[p] in pattern[p][1] and w not in yellows_passed:
                         yellows_passed.append(w)
-
-
 
 
 

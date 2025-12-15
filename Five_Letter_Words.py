@@ -1,4 +1,4 @@
-FiveLetterWords = [
+words = [
 "aback",
 "abase",
 "abate",

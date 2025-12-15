@@ -1,0 +1,17 @@
+
+positions = {1,2,3,4}
+ltr = 'A'
+testing_dict = {}
+
+positions.remove(4)
+
+def add_yellows(letter, positions, dictionary):
+        if letter not in dictionary:
+            dictionary[str(letter)] = set()
+        dictionary[letter].update(positions)
+
+
+add_yellows(ltr, positions, testing_dict)
+add_yellows(ltr, positions, testing_dict)
+
+print(testing_dict)
