@@ -6,6 +6,8 @@ greens = [None, None, None, None, None,]
 yellows = {}
 greys = set()
 
+letters_found = 0
+
 #Intakes users guesses and does some checking to validate input
 def guess_func(i):
         global guess 
@@ -30,7 +32,7 @@ def color():
                    add_greens(guess[i], int(i), greens)
                    print(greens)
             elif color.lower().strip() == "y":
-                   add_yellows(guess[i], [i], yellows)
+                   add_yellows(guess[i], i, yellows)
             elif color.lower().strip() == "b":
                    add_grey(guess[i], greys)
                    print(greys)
@@ -40,14 +42,17 @@ def color():
 
 
 #Works like a dream
-def add_greens(letter, position, dict):
-        dict[position] = str(letter)
+def add_greens(letter, position, dictionary):
+        if dictionary[position] == None:
+                dictionary[position] = str(letter)
+        else:
+               print("This position already has a green letter")
 
-#Broken. Not sure how to handle the passing of list of positions and how to remove the one where it was found yellow at.
-def add_yellows(letter, positions, dictionary):
+#Takes the letter and position it was discovered as yellow at, and creates or updates a dictionary entry tracking letters and their possible positions
+def add_yellows(letter, position, dictionary):
         if letter not in dictionary:
-            dictionary[str(letter)] = set()
-        dictionary[letter].update(positions)
+            dictionary[letter] = {0,1,2,3,4}
+        dictionary[letter].remove(position)
 
 
 def add_grey(letter, lst):
@@ -67,10 +72,7 @@ for j in range(2):
     guess_func(j)
 
 
-print(guesses)
-print(greens)
-print(yellows)
-print(greys)
-
-
-#This is a test
+print("guesses = " + str(guesses))
+print("greens = " + str(greens))
+print("yellows = " + str(yellows))
+print("greys = " + str(greys))
