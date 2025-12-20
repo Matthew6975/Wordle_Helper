@@ -48,11 +48,12 @@ def color():
 def add_greens(letter, position):
        if letter in yellows: 
               if position in yellows[letter]:
-                     print(str(letter) + " is yellow at this position. Do you want to overwrite it as green instead?" )
+                     print(str(letter) + " is yellow at this position. Do you want to overwrite it as green instead?")
                      global yellow_choice
                      yellow_choice = input("Y = yes, N = no \n")
                      if yellow_choice.strip().lower() == "y":
                             greens[position] = str(letter)
+                            yellows.setdefault(letter, set()).add(position)
                      elif yellow_choice.strip().lower() =="n":
                             return
                      else:
@@ -63,6 +64,7 @@ def add_greens(letter, position):
               grey_choice = input("Y = yes, N = no \n")
               if grey_choice.lower().strip() == "y":
                      greens[position] = str(letter)
+                     greys.remove(letter)
               elif grey_choice.lower().strip() == "n":
                      return
               else:
@@ -89,6 +91,7 @@ def add_yellows(letter, position):
               yellow_choice = input("Y = yes, N = no \n")
               if yellow_choice.lower().strip() == "y":
                      yellows.setdefault(letter, set()).add(position)
+                     greys.remove(letter)
               elif yellow_choice.lower().strip() == "n":
                      return
               else:
@@ -106,11 +109,12 @@ def add_yellows(letter, position):
                      print("Invalid input. Keeping original value")
        
        else:
-              if letter in yellows:
-                     if len(yellows[letter]) < 4:
-                            yellows.setdefault(letter, set()).add(position)
-              else:
+              if letter in yellows and len(yellows[letter]) < 4:
                      yellows.setdefault(letter, set()).add(position)
+              elif letter not in yellows:
+                     yellows.setdefault(letter, set()).add(position)
+              else:
+                     print("This letter is marked as yellow in all 5 positions. This is an error. You should restart the solver program.")
 
 
 
@@ -118,28 +122,30 @@ def add_grey(letter):
        if letter not in greens and letter not in yellows:
               greys.add(letter)
        elif letter in greens:
-              print(str(letter) + " is marked green in position " + str(greens[letter].index+1) + ". Do you want to overwrite " + str(letter) + " as a grey letter instead?")
-              global grey_choice
-              grey_choice = input("Y = yes, N = no \n")
-              if grey_choice.lower().strip() == "y":
-                      greens[letter].index = None
+              print(str(letter) + " is marked green in position " + str(greens.index(letter)+1) + ". Do you want to overwrite " + str(letter) + " as a grey letter instead?")
+              global green_choice
+              green_choice = input("Y = yes, N = no \n")
+              if green_choice.lower().strip() == "y":
+                      ltr_pos = greens.index(letter)
+                      greens[ltr_pos] = None
                       greys.add(letter)
-              elif grey_choice.lower().strip() == "n":
+              elif green_choice.lower().strip() == "n":
                      return
               else:
                      print("Input not valid. Keeping original value.") 
        elif letter in yellows:
-              print(str(letter) + " is yellow at this position. Do you want to overwrite it as green instead?" )
-                     global yellow_choice
-                     yellow_choice = input("Y = yes, N = no \n")
-                     if yellow_choice.strip().lower() == "y":
-                            greens[letter].index = str(letter)
-                     elif yellow_choice.strip().lower() =="n":
-                            return
-                     else:
-                            print("Invalid input. Keeping original value")
+              print(str(letter) + " is yellow at this position. Do you want to overwrite it as grey instead?" )
+              global yellow_choice
+              yellow_choice = input("Y = yes, N = no \n")
+              if yellow_choice.strip().lower() == "y":
+                     greys.add(letter)
+                     del yellows[letter]
+              elif yellow_choice.strip().lower() =="n":
+                     return
+              else:
+                     print("Invalid input. Keeping original value")
 
-#Flesh this out with a bunch of logical checks that confirm each list is as it should be. i.e. if a letter is discovered green, make sure it is removed from yellows
+#Flesh this out with a bunch of logical checks that confirm each list is as it should be. i.e. if a letter is discovered green, make sure it is removed from greys
 # as to not interfere with the logic.
 def align_lists(): #Align? Harmonize? Validate? Normalize? synchronize? Reconcile? Resolve? align_constraints()? So many good word choices!
        print("Aligning Lists . . .")
