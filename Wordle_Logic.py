@@ -9,6 +9,8 @@ greys = set()
 #pretty sure this variable is being incrimented wrong and grows when it shouldn't. Look into this.
 letters_found = 0
 
+potential_answers = set()
+
 #Intakes users guesses and does some checking to validate input
 def guess_func(i):
         global guess 
@@ -25,7 +27,6 @@ def guess_func(i):
         guesses.append(guess)
         color()
 
-#Still need to do error handling and fix the add_yellow() function before this is working properly
 def color():
        for i in range(len(guess)):
             color = input("What color was the " + guess[i] + " at position " + str(i+1) + "? (G = green, Y = yellow, B = Grey) ")
@@ -117,7 +118,7 @@ def add_yellows(letter, position):
                      print("This letter is marked as yellow in all 5 positions. This is an error. You should restart the solver program.")
 
 
-
+#Tracks the letters that are not present in the answer
 def add_grey(letter):
        if letter not in greens and letter not in yellows:
               greys.add(letter)
@@ -161,10 +162,33 @@ for j in range(2):
                     print("\n")
                     print("Wordle Solved! The answer was: " + str(greens[0]) + str(greens[1]) + str(greens[2]) + str(greens[3]) + str(greens[4]))
                     print("\n")
-    guess_func(j)
+    #guess_func(j)
 
 
 print("guesses = " + str(guesses))
 print("greens = " + str(greens))
 print("yellows = " + str(yellows))
 print("greys = " + str(greys))
+
+
+# def check_positions():
+#        for word in words:
+#               if all(
+#                      green is None or word[i] == green
+#                      for i, green in enumerate(greens)
+#               ):
+#                      potential_answers.add(word)
+
+def check_positions():
+    for word in words:
+        if all(
+            greens[i] is None or word[i] == greens[i]
+            for i in range(len(word))
+        ):
+            potential_answers.add(word)
+
+
+
+check_positions()
+print(potential_answers)
+print(len(potential_answers))
