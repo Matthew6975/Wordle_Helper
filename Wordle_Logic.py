@@ -70,7 +70,7 @@ def add_greens(letter, position):
                      return
               else:
                      print("Invalid input. Keeping original value")
-       elif greens[position] != None:
+       elif greens[position] != None and greens[position] != letter:
               print("Position " + str(position+1) + " already has the green letter: " + str(greens[position]) + ". Do you want to overwrite this with letter: " + str(letter) + "?")
               global green_choice
               green_choice = input("Y = yes, N = no \n")
@@ -152,6 +152,23 @@ def align_lists(): #Align? Harmonize? Validate? Normalize? synchronize? Reconcil
        print("Aligning Lists . . .")
 
 
+def find_answers():
+       for word in words:
+              if all(
+                     greens[i] is None or greens[i] == word[i]
+                     for i in range(len(word))
+              ) and all(
+                     letter in word and
+                     all(word[pos] != letter for pos in bad_pos)
+                     for letter, bad_pos in yellows.items()
+              ) and all(
+                     letter not in greys
+                     for letter in word
+              ):
+                     potential_answers.add(word)
+       print("There are " + str(len(potential_answers)) + " potential answers. They are: " + str(potential_answers))
+       potential_answers.clear()
+
 
 #runs the loop of information uptake and checks for solved answer with each loop.
 for j in range(2):
@@ -162,33 +179,11 @@ for j in range(2):
                     print("\n")
                     print("Wordle Solved! The answer was: " + str(greens[0]) + str(greens[1]) + str(greens[2]) + str(greens[3]) + str(greens[4]))
                     print("\n")
-    #guess_func(j)
+    guess_func(j)
+    find_answers()
 
 
 print("guesses = " + str(guesses))
 print("greens = " + str(greens))
 print("yellows = " + str(yellows))
 print("greys = " + str(greys))
-
-
-# def check_positions():
-#        for word in words:
-#               if all(
-#                      green is None or word[i] == green
-#                      for i, green in enumerate(greens)
-#               ):
-#                      potential_answers.add(word)
-
-def check_positions():
-    for word in words:
-        if all(
-            greens[i] is None or word[i] == greens[i]
-            for i in range(len(word))
-        ):
-            potential_answers.add(word)
-
-
-
-check_positions()
-print(potential_answers)
-print(len(potential_answers))
